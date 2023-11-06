@@ -65,7 +65,7 @@
         <table tableName="market_admin">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="role_ids" javaType="java.lang.Integer[]"
-                            typeHandler="com.cskaoyan.market.db.mybatis.JsonIntegerArrayTypeHandler"/>
+                            typeHandler="com.laoyancheng.www.db.mybatis.JsonIntegerArrayTypeHandler"/>
         </table>
         <table tableName="market_brand">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -73,7 +73,7 @@
         <table tableName="market_cart">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="specifications" javaType="java.lang.String[]"
-                            typeHandler="com.cskaoyan.market.db.mybatis.JsonStringArrayTypeHandler"/>
+                            typeHandler="com.laoyancheng.www.db.mybatis.JsonStringArrayTypeHandler"/>
         </table>
         <table tableName="market_category">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -84,13 +84,13 @@
         <table tableName="market_comment">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="pic_urls" javaType="java.lang.String[]"
-                            typeHandler="com.cskaoyan.market.db.mybatis.JsonStringArrayTypeHandler"/>
+                            typeHandler="com.laoyancheng.www.db.mybatis.JsonStringArrayTypeHandler"/>
         </table>
 
         <table tableName="market_feedback">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="pic_urls" javaType="java.lang.String[]"
-                            typeHandler="com.cskaoyan.market.db.mybatis.JsonStringArrayTypeHandler"/>
+                            typeHandler="com.laoyancheng.www.db.mybatis.JsonStringArrayTypeHandler"/>
         </table>
 
         <table tableName="market_footprint">
@@ -99,7 +99,7 @@
         <table tableName="market_goods">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="gallery" javaType="java.lang.String[]"
-                            typeHandler="com.cskaoyan.market.db.mybatis.JsonStringArrayTypeHandler"/>
+                            typeHandler="com.laoyancheng.www.db.mybatis.JsonStringArrayTypeHandler"/>
         </table>
         <table tableName="market_goods_attribute">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -110,7 +110,7 @@
         <table tableName="market_goods_product">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="specifications" javaType="java.lang.String[]"
-                            typeHandler="com.cskaoyan.market.db.mybatis.JsonStringArrayTypeHandler"/>
+                            typeHandler="com.laoyancheng.www.db.mybatis.JsonStringArrayTypeHandler"/>
         </table>
         <table tableName="market_issue">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -124,9 +124,9 @@
         <table tableName="market_order_goods">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="specifications" javaType="java.lang.String[]"
-                            typeHandler="com.cskaoyan.market.db.mybatis.JsonStringArrayTypeHandler"/>
+                            typeHandler="com.laoyancheng.www.db.mybatis.JsonStringArrayTypeHandler"/>
             <columnOverride column="comments" javaType="java.lang.Integer[]"
-                            typeHandler="com.cskaoyan.market.db.mybatis.JsonIntegerArrayTypeHandler"/>
+                            typeHandler="com.laoyancheng.www.db.mybatis.JsonIntegerArrayTypeHandler"/>
 
         </table>
         <table tableName="market_region">
@@ -141,7 +141,7 @@
         <table tableName="market_topic">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="goods" javaType="java.lang.Integer[]"
-                            typeHandler="com.cskaoyan.market.db.mybatis.JsonIntegerArrayTypeHandler"/>
+                            typeHandler="com.laoyancheng.www.db.mybatis.JsonIntegerArrayTypeHandler"/>
         </table>
         <table tableName="market_user">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -159,7 +159,7 @@
         <table tableName="market_coupon">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="goods_value" javaType="java.lang.Integer[]"
-                            typeHandler="com.cskaoyan.market.db.mybatis.JsonIntegerArrayTypeHandler"/>
+                            typeHandler="com.laoyancheng.www.db.mybatis.JsonIntegerArrayTypeHandler"/>
         </table>
         <table tableName="market_coupon_user">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -182,7 +182,7 @@
         <table tableName="market_aftersale">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="pictures" javaType="java.lang.String[]"
-                            typeHandler="com.cskaoyan.market.db.mybatis.JsonStringArrayTypeHandler"/>
+                            typeHandler="com.laoyancheng.www.db.mybatis.JsonStringArrayTypeHandler"/>
         </table>
     </context>
 </generatorConfiguration>

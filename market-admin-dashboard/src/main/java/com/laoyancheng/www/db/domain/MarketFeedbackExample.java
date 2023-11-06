@@ -243,7 +243,7 @@ public class MarketFeedbackExample {
             if (value == null) {
                 throw new RuntimeException("Value for " + property + " cannot be null");
             }
-            picUrlsCriteria.add(new Criterion(condition, value, "com.cskaoyan.market.db.mybatis.JsonStringArrayTypeHandler"));
+            picUrlsCriteria.add(new Criterion(condition, value, "com.laoyancheng.www.db.mybatis.JsonStringArrayTypeHandler"));
             allCriteria = null;
         }
 
@@ -251,7 +251,7 @@ public class MarketFeedbackExample {
             if (value1 == null || value2 == null) {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
-            picUrlsCriteria.add(new Criterion(condition, value1, value2, "com.cskaoyan.market.db.mybatis.JsonStringArrayTypeHandler"));
+            picUrlsCriteria.add(new Criterion(condition, value1, value2, "com.laoyancheng.www.db.mybatis.JsonStringArrayTypeHandler"));
             allCriteria = null;
         }
 

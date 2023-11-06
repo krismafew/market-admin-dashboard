@@ -243,7 +243,7 @@ public class MarketAdminExample {
             if (value == null) {
                 throw new RuntimeException("Value for " + property + " cannot be null");
             }
-            roleIdsCriteria.add(new Criterion(condition, value, "com.cskaoyan.market.db.mybatis.JsonIntegerArrayTypeHandler"));
+            roleIdsCriteria.add(new Criterion(condition, value, "com.laoyancheng.www.db.mybatis.JsonIntegerArrayTypeHandler"));
             allCriteria = null;
         }
 
@@ -251,7 +251,7 @@ public class MarketAdminExample {
             if (value1 == null || value2 == null) {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
-            roleIdsCriteria.add(new Criterion(condition, value1, value2, "com.cskaoyan.market.db.mybatis.JsonIntegerArrayTypeHandler"));
+            roleIdsCriteria.add(new Criterion(condition, value1, value2, "com.laoyancheng.www.db.mybatis.JsonIntegerArrayTypeHandler"));
             allCriteria = null;
         }
 
