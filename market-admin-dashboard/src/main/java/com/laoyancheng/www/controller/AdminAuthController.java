@@ -3,8 +3,9 @@ package com.laoyancheng.www.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laoyancheng.www.db.domain.MarketAdmin;
-import com.laoyancheng.www.service.AdminAuthService;
-import com.laoyancheng.www.service.impl.AdminAuthServiceImpl;
+import com.laoyancheng.www.service.MarketAdminService;
+import com.laoyancheng.www.service.impl.MarketAdminServiceImpl;
+import com.laoyancheng.www.util.JacksonUtil;
 import com.laoyancheng.www.util.ResponseUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,18 +16,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 @WebServlet("/admin/auth/*")
 public class AdminAuthController extends HttpServlet {
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private AdminAuthService adminAuthService = new AdminAuthServiceImpl();
+    private ObjectMapper objectMapper = new ObjectMapper();
+    private MarketAdminService marketAdminService = new MarketAdminServiceImpl();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String option = req.getRequestURI().replace(req.getContextPath() + "/admin/auth/", "");
 
+        if(StringUtils.equals(option, "info")){
+            info(req, resp);
+        }
     }
 
     @Override
@@ -44,6 +49,7 @@ public class AdminAuthController extends HttpServlet {
     // 1、账号或者密码为空
     // 2、账号和密码传递给AdminAuthService.login()处理
     //   2.1用户名和密码正确   2.2用户名或密码错误
+
     private void login(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         // 将请求体中的数据转化为字符串类型
@@ -69,15 +75,15 @@ public class AdminAuthController extends HttpServlet {
 
         // 如果账号和密码有一个为空
         if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
-            resp.getWriter().println(objectMapper.writeValueAsString(ResponseUtil.badArgumentValue()));
+            resp.getWriter().println(JacksonUtil.writeValueAsString(ResponseUtil.badArgumentValue()));
             return;
         }
 
         // 交给adminAuthService处理登录
-        MarketAdmin admin = adminAuthService.login(username, password, req.getLocalAddr());
+        MarketAdmin admin = marketAdminService.login(username, password, req.getLocalAddr());
         // 如果admin为null, 说明账号或密码错误
         if(admin == null)
-            resp.getWriter().println(objectMapper.writeValueAsString(ResponseUtil.wrongUsernameOrPassword()));
+            resp.getWriter().println(JacksonUtil.writeValueAsString(ResponseUtil.wrongUsernameOrPassword()));
         else {
             // 账号和密码正确,登陆成功
             // 返回响应
@@ -92,12 +98,28 @@ public class AdminAuthController extends HttpServlet {
             HttpSession session = req.getSession();
             data.put("token", session.getId());
 
-            // 在Session中存入用户名，进行会话管理
-            session.setAttribute("username", username);
+            // 在Session中存入管理员对象，进行会话管理
+            session.setAttribute("info", admin);
 
-            resp.getWriter().println(objectMapper.writeValueAsString(ResponseUtil.ok(data)));
+            resp.getWriter().println(JacksonUtil.writeValueAsString(ResponseUtil.ok(data)));
         }
+    }
 
+    private void info(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        MarketAdmin admin = (MarketAdmin) session.getAttribute("info");
 
+        // 封装请求体
+        HashMap<String, Object> data = new HashMap<>();
+        // 封装roles
+        data.put("roles", Arrays.asList(new String[]{"超级管理员"}));
+
+        data.put("name", admin.getUsername());
+        // 封装perms
+        data.put("perms", Arrays.asList(new String[]{"*"}));
+
+        data.put("avatar", admin.getAvatar());
+        Object responseBody = ResponseUtil.ok(data);
+        resp.getWriter().println(JacksonUtil.writeValueAsString(responseBody));
     }
 }

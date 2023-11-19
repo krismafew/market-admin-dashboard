@@ -2,7 +2,7 @@ package com.laoyancheng.www.service;
 
 import com.laoyancheng.www.db.domain.MarketAdmin;
 
-public interface AdminAuthService {
+public interface MarketAdminService {
 
     MarketAdmin login(String username, String password, String localAddr);
 }

@@ -1,6 +1,7 @@
 package com.laoyancheng.www.util;
 
-//import com.github.pagehelper.Page;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,42 +56,53 @@ public class ResponseUtil {
         return obj;
     }
 
+    public static Object okList(PageInfo pageInfo) {
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("list", pageInfo.getList());
+        data.put("total", pageInfo.getTotal());
+        data.put("page", pageInfo.getPageNum());
+        data.put("limit", pageInfo.getPageSize());
+        data.put("pages", pageInfo.getPages());
+        return ok(data);
+    }
+
     public static Object okList(List list) {
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("list", list);
 
-//        if (list instanceof Page) {
-//            Page page = (Page) list;
-//            data.put("total", page.getTotal());
-//            data.put("page", page.getPageNum());
-//            data.put("limit", page.getPageSize());
-//            data.put("pages", page.getPages());
-//        } else {
+        if (list instanceof Page) {
+            Page page = (Page) list;
+            data.put("total", page.getTotal());
+            data.put("page", page.getPageNum());
+            data.put("limit", page.getPageSize());
+            data.put("pages", page.getPages());
+        } else {
             data.put("total", list.size());
             data.put("page", 1);
             data.put("limit", list.size());
             data.put("pages", 1);
-        //}
+        }
 
         return ok(data);
     }
+
 
     public static Object okList(List list, List pagedList) {
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("list", list);
 
-//        if (pagedList instanceof Page) {
-//            Page page = (Page) pagedList;
-//            data.put("total", page.getTotal());
-//            data.put("page", page.getPageNum());
-//            data.put("limit", page.getPageSize());
-//            data.put("pages", page.getPages());
-//        } else {
+        if (pagedList instanceof Page) {
+            Page page = (Page) pagedList;
+            data.put("total", page.getTotal());
+            data.put("page", page.getPageNum());
+            data.put("limit", page.getPageSize());
+            data.put("pages", page.getPages());
+        } else {
             data.put("total", pagedList.size());
             data.put("page", 1);
             data.put("limit", pagedList.size());
             data.put("pages", 1);
-       // }
+        }
 
         return ok(data);
     }
@@ -101,7 +113,12 @@ public class ResponseUtil {
         obj.put("errmsg", "错误");
         return obj;
     }
-
+    public static Object fail(String msg) {
+        Map<String, Object> obj = new HashMap<String, Object>();
+        obj.put("errno", -1);
+        obj.put("errmsg", msg);
+        return obj;
+    }
     public static Object fail(int errno, String errmsg) {
         Map<String, Object> obj = new HashMap<String, Object>();
         obj.put("errno", errno);
@@ -109,12 +126,15 @@ public class ResponseUtil {
         return obj;
     }
 
+    public static Object insertDataFailed() {
+        return fail(508, "插入数据失败");
+    }
     public static Object badArgument() {
         return fail(401, "参数不对");
     }
 
     public static Object badArgumentValue() {
-        return fail(402, "账号或密码不能为空");
+        return fail(402, "参数值不对");
     }
 
     public static Object unlogin() {
@@ -141,10 +161,27 @@ public class ResponseUtil {
         return fail(605, "用户名、密码错误");
     }
 
+
+
     public static Object unauthz() {
         return fail(506, "无操作权限");
     }
 
+    public static Object roleAlreadyExists() {
+        return fail(640, "角色已经存在");
+    }
+
+    public static Object illegalAdminName() {
+        return fail(601, "管理员名称不符合规定");
+    }
+
+    public static Object illegalAdminPassword() {
+        return fail(602, "管理员密码长度不能小于6");
+    }
+
+    public static Object adminAlreadyExists() {
+        return fail(602, "管理员已经存在");
+    }
 
 }
 

@@ -3,13 +3,11 @@ package com.laoyancheng.www.service.impl;
 import com.laoyancheng.www.db.domain.MarketAdmin;
 import com.laoyancheng.www.db.domain.MarketAdminExample;
 import com.laoyancheng.www.db.mapper.MarketAdminMapper;
-import com.laoyancheng.www.service.AdminAuthService;
+import com.laoyancheng.www.service.MarketAdminService;
 import com.laoyancheng.www.util.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
 
-import java.util.Date;
-
-public class AdminAuthServiceImpl implements AdminAuthService {
+public class MarketAdminServiceImpl implements MarketAdminService {
 
     @Override
     public MarketAdmin login(String username, String password, String localAddr) {
