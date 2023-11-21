@@ -502,4 +502,39 @@
     update market_category set deleted = 1
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectCategoryHierarchy" resultMap="hierarchyMap">
+    select id, name, keywords, `desc`, icon_url, pic_url, level from market_category where level = 'L1' and deleted != 1
+  </select>
+  <resultMap id="hierarchyMap" type="com.laoyancheng.www.db.DTO.MarketCategoryDTO">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="keywords" column="keywords"/>
+    <result property="desc" column="desc"/>
+    <result property="iconUrl" column="icon_url"/>
+    <result property="picUrl" column="pic_url"/>
+    <result property="level" column="level"/>
+
+    <collection property="children" ofType="com.laoyancheng.www.db.DTO.MarketCategoryDTO" column="id" select="selectChildCategory"/>
+  </resultMap>
+    <select id="selectChildCategory"  resultMap="baseMap">
+      select id, name, keywords, `desc`, icon_url, pic_url, level from market_category where pid = #{id} and deleted != 1
+    </select>
+  <resultMap id="baseMap" type="com.laoyancheng.www.db.DTO.MarketCategoryDTO">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="keywords" column="keywords"/>
+    <result property="desc" column="desc"/>
+    <result property="iconUrl" column="icon_url"/>
+    <result property="picUrl" column="pic_url"/>
+    <result property="level" column="level"/>
+  </resultMap>
+    <select id="selectLevel1Category" resultMap="CategoryL1DTOResultMap">
+      select id, name from market_category where level = 'L1' and deleted != 1
+    </select>
+
+  <resultMap id="CategoryL1DTOResultMap" type="com.laoyancheng.www.db.DTO.MarketCategoryL1DTO">
+    <id property="value" column="id"/>
+    <result property="label" column="name"/>
+  </resultMap>
+
 </mapper>
