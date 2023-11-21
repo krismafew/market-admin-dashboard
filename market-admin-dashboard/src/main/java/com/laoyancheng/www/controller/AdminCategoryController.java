@@ -40,12 +40,6 @@ public class AdminCategoryController extends HttpServlet {
         }
     }
 
-    private void listCategoryL1(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        List<MarketCategoryL1DTO> categoryL1DTOList = marketCategoryService.listL1();
-        Object requestBody = ResponseUtil.okList(categoryL1DTOList);
-        resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String option = req.getRequestURI().replace("/admin/category/", "");
@@ -56,6 +50,12 @@ public class AdminCategoryController extends HttpServlet {
         }else if(StringUtils.equals("delete", option)){
             deleteCategory(req, resp);
         }
+    }
+
+    private void listCategoryL1(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        List<MarketCategoryL1DTO> categoryL1DTOList = marketCategoryService.listL1();
+        Object requestBody = ResponseUtil.okList(categoryL1DTOList);
+        resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }
 
     private void deleteCategory(HttpServletRequest req, HttpServletResponse resp) throws IOException {
