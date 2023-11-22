@@ -137,6 +137,10 @@ public class ResponseUtil {
         return fail(402, "参数值不对");
     }
 
+    public static Object fileNotFound() {
+        return fail(404, "页面不存在！");
+    }
+
     public static Object unlogin() {
         return fail(501, "请登录");
     }

@@ -18,9 +18,12 @@ public class CharacterEncodingFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest)servletRequest;
         HttpServletResponse resp = (HttpServletResponse)servletResponse;
 
+        if(!req.getRequestURI().startsWith("admin/storage/fetch/")) {
+            resp.setContentType("text/html;charset=utf-8");
+        }
         req.setCharacterEncoding("utf-8");
-        resp.setContentType("text/html;charset=utf-8");
         filterChain.doFilter(req, resp);
+
     }
 
     @Override
