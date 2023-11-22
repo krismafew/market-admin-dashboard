@@ -1,5 +1,6 @@
 package com.laoyancheng.www.db.mapper;
 
+import com.laoyancheng.www.db.DTO.MarketBrandLabelDTO;
 import com.laoyancheng.www.db.domain.MarketBrand;
 import com.laoyancheng.www.db.domain.MarketBrandExample;
 import java.util.List;
@@ -149,4 +150,6 @@ public interface MarketBrandMapper {
      * @mbg.generated
      */
     int logicalDeleteByPrimaryKey(Integer id);
+
+    List<MarketBrandLabelDTO> selectBrandLabel();
 }

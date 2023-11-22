@@ -1,5 +1,6 @@
 package com.laoyancheng.www.service;
 
+import com.laoyancheng.www.db.DTO.MarketBrandLabelDTO;
 import com.laoyancheng.www.db.domain.MarketBrand;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface MarketBrandService {
     MarketBrand update(MarketBrand marketBrand);
 
     void delete(Integer id);
+
+    List<MarketBrandLabelDTO> listLabel();
 }

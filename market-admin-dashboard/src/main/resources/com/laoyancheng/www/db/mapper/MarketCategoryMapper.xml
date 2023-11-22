@@ -532,9 +532,27 @@
       select id, name from market_category where level = 'L1' and deleted != 1
     </select>
 
-  <resultMap id="CategoryL1DTOResultMap" type="com.laoyancheng.www.db.DTO.MarketCategoryL1DTO">
+  <resultMap id="CategoryL1DTOResultMap" type="com.laoyancheng.www.db.DTO.MarketCategoryLabelDTO">
     <id property="value" column="id"/>
     <result property="label" column="name"/>
   </resultMap>
+  <select id="selectCategoryHierarchyLabel" resultMap="hierarchyLabelMap">
+    select id, `name` from market_category where level = 'L1' and deleted != 1
+  </select>
 
+  <resultMap id="hierarchyLabelMap" type="com.laoyancheng.www.db.DTO.MarketCategoryLabelDTO">
+    <id property="value" column="id"/>
+    <result property="label" column="name"/>
+
+    <collection property="children" ofType="com.laoyancheng.www.db.DTO.MarketCategoryLabelDTO" column="id" select="selectChildCategoryLabel"/>
+  </resultMap>
+
+  <select id="selectChildCategoryLabel" resultMap="l2CategoryLabelMap">
+    select id, name from market_category where pid = #{id} and deleted != 1
+  </select>
+
+  <resultMap id="l2CategoryLabelMap" type="com.laoyancheng.www.db.DTO.MarketCategoryLabelDTO">
+    <id property="value" column="id"/>
+    <result property="label" column="name"/>
+  </resultMap>
 </mapper>

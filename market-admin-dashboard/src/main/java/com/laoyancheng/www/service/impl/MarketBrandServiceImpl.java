@@ -1,6 +1,7 @@
 package com.laoyancheng.www.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.laoyancheng.www.db.DTO.MarketBrandLabelDTO;
 import com.laoyancheng.www.db.domain.MarketBrand;
 import com.laoyancheng.www.db.domain.MarketBrandExample;
 import com.laoyancheng.www.db.mapper.MarketBrandMapper;
@@ -55,5 +56,14 @@ public class MarketBrandServiceImpl implements MarketBrandService {
         marketBrandMapper.logicalDeleteByPrimaryKey(id);
         sqlSession.commit();
         sqlSession.close();
+    }
+
+    @Override
+    public List<MarketBrandLabelDTO> listLabel() {
+        SqlSession sqlSession = MyBatisUtil.getSqlSession();
+        MarketBrandMapper marketBrandMapper = sqlSession.getMapper(MarketBrandMapper.class);
+        List<MarketBrandLabelDTO> brandLabelDTOList = marketBrandMapper.selectBrandLabel();
+        sqlSession.close();
+        return  brandLabelDTOList;
     }
 }

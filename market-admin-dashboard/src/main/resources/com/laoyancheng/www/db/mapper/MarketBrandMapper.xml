@@ -454,4 +454,13 @@
     update market_brand set deleted = 1
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectBrandLabel" resultMap="brandLabelMap">
+    select id, name from market_brand where deleted != 1
+  </select>
+
+  <resultMap id="brandLabelMap" type="com.laoyancheng.www.db.DTO.MarketBrandLabelDTO">
+    <id property="value" column="id"/>
+    <result property="label" column="name"/>
+  </resultMap>
 </mapper>

@@ -1,7 +1,7 @@
 package com.laoyancheng.www.controller;
 
 import com.laoyancheng.www.db.DTO.MarketCategoryDTO;
-import com.laoyancheng.www.db.DTO.MarketCategoryL1DTO;
+import com.laoyancheng.www.db.DTO.MarketCategoryLabelDTO;
 import com.laoyancheng.www.db.domain.MarketCategory;
 import com.laoyancheng.www.service.MarketCategoryService;
 import com.laoyancheng.www.service.impl.MarketCategoryServiceImpl;
@@ -18,8 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -53,7 +51,7 @@ public class AdminCategoryController extends HttpServlet {
     }
 
     private void listCategoryL1(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        List<MarketCategoryL1DTO> categoryL1DTOList = marketCategoryService.listL1();
+        List<MarketCategoryLabelDTO> categoryL1DTOList = marketCategoryService.listL1();
         Object requestBody = ResponseUtil.okList(categoryL1DTOList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }

@@ -1,7 +1,7 @@
 package com.laoyancheng.www.db.mapper;
 
 import com.laoyancheng.www.db.DTO.MarketCategoryDTO;
-import com.laoyancheng.www.db.DTO.MarketCategoryL1DTO;
+import com.laoyancheng.www.db.DTO.MarketCategoryLabelDTO;
 import com.laoyancheng.www.db.domain.MarketCategory;
 import com.laoyancheng.www.db.domain.MarketCategoryExample;
 import java.util.List;
@@ -154,5 +154,8 @@ public interface MarketCategoryMapper {
 
     List<MarketCategoryDTO> selectCategoryHierarchy();
 
-    List<MarketCategoryL1DTO> selectLevel1Category();
+    List<MarketCategoryLabelDTO> selectLevel1Category();
+
+
+    List<MarketCategoryLabelDTO> selectCategoryHierarchyLabel();
 }
