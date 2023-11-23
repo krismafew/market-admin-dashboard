@@ -5,7 +5,7 @@ import com.laoyancheng.www.db.domain.MarketAd;
 import java.util.List;
 
 public interface MarketAdService {
-    List<MarketAd> list(Integer pageNum, Integer pageSize, String sort, String order);
+    List<MarketAd> list(Integer pageNum, Integer pageSize, String sort, String order, String name, String content);
 
     Object create(MarketAd marketAd);
 

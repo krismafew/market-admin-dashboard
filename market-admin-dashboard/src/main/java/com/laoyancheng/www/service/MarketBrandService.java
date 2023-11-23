@@ -6,7 +6,7 @@ import com.laoyancheng.www.db.domain.MarketBrand;
 import java.util.List;
 
 public interface MarketBrandService {
-    List<MarketBrand> list(Integer pageNum, Integer pageSize, String sort, String order);
+    List<MarketBrand> list(Integer pageNum, Integer pageSize, String sort, String order, Integer id, String name);
 
     MarketBrand create(MarketBrand marketBrand);
 

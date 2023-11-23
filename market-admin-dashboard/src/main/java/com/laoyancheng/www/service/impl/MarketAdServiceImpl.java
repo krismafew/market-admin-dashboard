@@ -6,6 +6,7 @@ import com.laoyancheng.www.db.domain.MarketAdExample;
 import com.laoyancheng.www.db.mapper.MarketAdMapper;
 import com.laoyancheng.www.service.MarketAdService;
 import com.laoyancheng.www.util.MyBatisUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
@@ -17,11 +18,17 @@ import java.util.List;
  */
 public class MarketAdServiceImpl implements MarketAdService {
     @Override
-    public List<MarketAd> list(Integer pageNum, Integer pageSize, String sort, String order) {
+    public List<MarketAd> list(Integer pageNum, Integer pageSize, String sort, String order, String name, String content) {
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
         MarketAdMapper marketAdMapper = sqlSession.getMapper(MarketAdMapper.class);
         MarketAdExample marketAdExample = new MarketAdExample();
-        marketAdExample.orderBy(sort + " " + order).createCriteria().andDeletedEqualTo(false);
+        MarketAdExample.Criteria criteria = marketAdExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
+        if(!StringUtils.isEmpty(name))
+            criteria.andNameLike("%" + name + "%");
+        if(!StringUtils.isEmpty(content))
+            criteria.andContentLike("%" + content + "%");
+        marketAdExample.setOrderByClause(sort + " " + order);
         PageHelper.startPage(pageNum, pageSize);
         List<MarketAd> adList = marketAdMapper.selectByExample(marketAdExample);
         sqlSession.close();

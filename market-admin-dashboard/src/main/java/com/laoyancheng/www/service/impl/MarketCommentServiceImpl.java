@@ -17,11 +17,17 @@ import java.util.List;
  */
 public class MarketCommentServiceImpl implements MarketCommentService {
     @Override
-    public List<MarketComment> list(Integer pageNum, Integer pageSize, String sort, String order) {
+    public List<MarketComment> list(Integer pageNum, Integer pageSize, String sort, String order, Integer userId, Integer valueId) {
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
         MarketCommentMapper marketCommentMapper = sqlSession.getMapper(MarketCommentMapper.class);
         MarketCommentExample marketCommentExample = new MarketCommentExample();
-        marketCommentExample.orderBy(sort + " " + order).createCriteria().andDeletedEqualTo(false);
+        MarketCommentExample.Criteria criteria = marketCommentExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
+        if(userId != null)
+            criteria.andUserIdEqualTo(userId);
+        if(valueId != null)
+            criteria.andValueIdEqualTo(valueId);
+        marketCommentExample.setOrderByClause(sort + " " + order);
         PageHelper.startPage(pageNum, pageSize);
         List<MarketComment> commentList = marketCommentMapper.selectByExample(marketCommentExample);
         sqlSession.close();

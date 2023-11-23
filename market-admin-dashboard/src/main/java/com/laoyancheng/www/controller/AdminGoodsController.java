@@ -227,8 +227,14 @@ public class AdminGoodsController extends HttpServlet {
         Integer pageSize = Integer.valueOf(req.getParameter("limit"));
         String sort = req.getParameter("sort");
         String order = req.getParameter("order");
+        String goodsSn = req.getParameter("goodsSn");
+        String name = req.getParameter("name");
+        String goodsIdStr = req.getParameter("goodsId");
+        Integer goodsId = null;
+        if(!StringUtils.isEmpty(goodsIdStr))
+            goodsId = Integer.valueOf(goodsIdStr);
 
-        List<MarketGoods> goodsList = marketGoodsService.list(pageNum, pageSize, sort, order);
+        List<MarketGoods> goodsList = marketGoodsService.list(pageNum, pageSize, sort, order, goodsSn, name, goodsId);
         Object requestBody = ResponseUtil.okList(goodsList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }

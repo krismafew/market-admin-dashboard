@@ -17,11 +17,17 @@ import java.util.List;
  */
 public class MarketCollectServiceImpl implements MarketCollectService {
     @Override
-    public List<MarketCollect> list(Integer pageNum, Integer pageSize, String sort, String order) {
+    public List<MarketCollect> list(Integer pageNum, Integer pageSize, String sort, String order, Integer userId, Integer valueId) {
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
         MarketCollectMapper marketCollectMapper = sqlSession.getMapper(MarketCollectMapper.class);
         MarketCollectExample marketCollectExample = new MarketCollectExample();
-        marketCollectExample.orderBy(sort + " " + order).createCriteria().andDeletedEqualTo(false);
+        MarketCollectExample.Criteria criteria = marketCollectExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
+        if(userId != null)
+            criteria.andUserIdEqualTo(userId);
+        if(valueId != null)
+            criteria.andValueIdEqualTo(valueId);
+        marketCollectExample.setOrderByClause(sort + " " + order);
         PageHelper.startPage(pageNum, pageSize);
         List<MarketCollect> collectList = marketCollectMapper.selectByExample(marketCollectExample);
         sqlSession.close();

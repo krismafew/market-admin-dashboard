@@ -6,6 +6,7 @@ import com.laoyancheng.www.db.domain.MarketIssueExample;
 import com.laoyancheng.www.db.mapper.MarketIssueMapper;
 import com.laoyancheng.www.service.MarketIssueService;
 import com.laoyancheng.www.util.MyBatisUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
@@ -17,11 +18,15 @@ import java.util.List;
  */
 public class MarketIssueServiceImpl implements MarketIssueService {
     @Override
-    public List<MarketIssue> list(Integer pageNum, Integer pageSize, String sort, String order) {
+    public List<MarketIssue> list(Integer pageNum, Integer pageSize, String sort, String order, String question) {
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
         MarketIssueMapper marketIssueMapper = sqlSession.getMapper(MarketIssueMapper.class);
         MarketIssueExample marketIssueExample = new MarketIssueExample();
-        marketIssueExample.orderBy(sort + " " + order).createCriteria().andDeletedEqualTo(false);
+        MarketIssueExample.Criteria criteria = marketIssueExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
+        if(!StringUtils.isEmpty(question))
+            criteria.andQuestionLike("%" + question + "%");
+        marketIssueExample.setOrderByClause(sort + " " + order);
         PageHelper.startPage(pageNum, pageSize);
         List<MarketIssue> issueList = marketIssueMapper.selectByExample(marketIssueExample);
         sqlSession.close();

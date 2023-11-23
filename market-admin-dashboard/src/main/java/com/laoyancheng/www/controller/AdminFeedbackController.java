@@ -37,7 +37,12 @@ public class AdminFeedbackController extends HttpServlet {
         Integer pageSize = Integer.valueOf(req.getParameter("limit"));
         String sort = req.getParameter("sort");
         String order = req.getParameter("order");
-        List<MarketFeedback> feedbackList = marketFeedbackService.list(pageNum, pageSize, sort, order);
+        String username = req.getParameter("username");
+        String idStr = req.getParameter("id");
+        Integer id = null;
+        if(!StringUtils.isEmpty(idStr))
+            id = Integer.valueOf(idStr);
+        List<MarketFeedback> feedbackList = marketFeedbackService.list(pageNum, pageSize, sort, order, username, id);
         Object requestBody = ResponseUtil.okList(feedbackList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }

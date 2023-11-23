@@ -6,6 +6,7 @@ import com.laoyancheng.www.db.domain.MarketUserExample;
 import com.laoyancheng.www.db.mapper.MarketUserMapper;
 import com.laoyancheng.www.service.MarketUserService;
 import com.laoyancheng.www.util.MyBatisUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
@@ -28,15 +29,31 @@ public class MarketUserServiceImpl implements MarketUserService {
     }
 
     @Override
-    public List<MarketUser> list(Integer pageNum, Integer pageSize, String sort, String order) {
+    public List<MarketUser> list(Integer pageNum, Integer pageSize, String sort, String order, String username, String mobile) {
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
         MarketUserMapper marketUserMapper = sqlSession.getMapper(MarketUserMapper.class);
         MarketUserExample marketUserExample = new MarketUserExample();
-        marketUserExample.orderBy(sort + " " + order).createCriteria()
-                        .andDeletedEqualTo(false);
+        MarketUserExample.Criteria criteria = marketUserExample.createCriteria();
+        marketUserExample.setOrderByClause(sort + " " + order);
+        criteria.andDeletedEqualTo(false);
+        if(!StringUtils.isEmpty(username)) {
+            criteria.andUsernameLike("%" + username + "%");
+        }
+        if(!StringUtils.isEmpty(mobile)) {
+            criteria.andMobileEqualTo(mobile);
+        }
         PageHelper.startPage(pageNum, pageSize);
         List<MarketUser> userList = marketUserMapper.selectByExample(marketUserExample);
 
         return userList;
+    }
+
+    @Override
+    public MarketUser selectOneById(Integer id) {
+        SqlSession sqlSession = MyBatisUtil.getSqlSession();
+        MarketUserMapper marketUserMapper = sqlSession.getMapper(MarketUserMapper.class);
+        MarketUser marketUser = marketUserMapper.selectByPrimaryKey(id);
+        sqlSession.close();
+        return marketUser;
     }
 }

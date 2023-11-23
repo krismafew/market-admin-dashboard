@@ -131,8 +131,9 @@ public class AdminIssueController extends HttpServlet {
         Integer pageSize = Integer.valueOf(req.getParameter("limit"));
         String sort = req.getParameter("sort");
         String order = req.getParameter("order");
+        String question = req.getParameter("question");
 
-        List<MarketIssue> issueList = marketIssueService.list(pageNum, pageSize, sort, order);
+        List<MarketIssue> issueList = marketIssueService.list(pageNum, pageSize, sort, order, question);
         Object requestBody = ResponseUtil.okList(issueList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }

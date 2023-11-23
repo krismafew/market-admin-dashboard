@@ -5,7 +5,7 @@ import com.laoyancheng.www.db.domain.MarketIssue;
 import java.util.List;
 
 public interface MarketIssueService {
-    List<MarketIssue> list(Integer pageNum, Integer pageSize, String sort, String order);
+    List<MarketIssue> list(Integer pageNum, Integer pageSize, String sort, String order, String question);
 
     Object create(MarketIssue marketIssue);
 

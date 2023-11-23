@@ -37,7 +37,15 @@ public class AdminCollectController extends HttpServlet {
         Integer pageSize = Integer.valueOf(req.getParameter("limit"));
         String sort = req.getParameter("sort");
         String order = req.getParameter("order");
-        List<MarketCollect> collectList = marketCollectService.list(pageNum, pageSize, sort, order);
+        String userIdStr = req.getParameter("userId");
+        String valueIdStr = req.getParameter("valueId");
+        Integer userId = null;
+        Integer valueId = null;
+        if(!StringUtils.isEmpty(userIdStr))
+            userId = Integer.valueOf(userIdStr);
+        if(!StringUtils.isEmpty(valueIdStr))
+            valueId = Integer.valueOf(valueIdStr);
+        List<MarketCollect> collectList = marketCollectService.list(pageNum, pageSize, sort, order, userId, valueId);
         Object requestBody = ResponseUtil.okList(collectList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }

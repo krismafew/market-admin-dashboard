@@ -7,7 +7,7 @@ import java.util.List;
 public interface MarketGoodsService {
     Integer countGoods();
 
-    List<MarketGoods> list(Integer pageNum, Integer pageSize, String sort, String order);
+    List<MarketGoods> list(Integer pageNum, Integer pageSize, String sort, String order, String goodsSn, String name, Integer goodsId);
 
     Integer create(MarketGoods marketGoods);
 

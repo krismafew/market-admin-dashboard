@@ -6,6 +6,7 @@ import com.laoyancheng.www.db.domain.MarketGoodsExample;
 import com.laoyancheng.www.db.mapper.MarketGoodsMapper;
 import com.laoyancheng.www.service.MarketGoodsService;
 import com.laoyancheng.www.util.MyBatisUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 
 import java.time.LocalDateTime;
@@ -29,11 +30,19 @@ public class MarketGoodsServiceImpl implements MarketGoodsService {
     }
 
     @Override
-    public List<MarketGoods> list(Integer pageNum, Integer pageSize, String sort, String order) {
+    public List<MarketGoods> list(Integer pageNum, Integer pageSize, String sort, String order, String goodsSn, String name, Integer goodsId) {
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
         MarketGoodsMapper marketGoodsMapper = sqlSession.getMapper(MarketGoodsMapper.class);
         MarketGoodsExample goodsExample = new MarketGoodsExample();
-        goodsExample.orderBy(sort + " " + order).createCriteria().andDeletedEqualTo(false);
+        MarketGoodsExample.Criteria criteria = goodsExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
+        if(!StringUtils.isEmpty(goodsSn))
+            criteria.andGoodsSnEqualTo(goodsSn);
+        if(goodsId != null)
+            criteria.andIdEqualTo(goodsId);
+        if(!StringUtils.isEmpty(name))
+            criteria.andNameLike("%" + name + "%");
+        goodsExample.setOrderByClause(sort + " " + order);
         PageHelper.startPage(pageNum, pageSize);
         List<MarketGoods> goodsList = marketGoodsMapper.selectByExample(goodsExample);
         sqlSession.close();

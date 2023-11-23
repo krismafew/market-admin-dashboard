@@ -37,7 +37,12 @@ public class AdminHistoryController extends HttpServlet {
         Integer pageSize = Integer.valueOf(req.getParameter("limit"));
         String sort = req.getParameter("sort");
         String order = req.getParameter("order");
-        List<MarketSearchHistory> historyList = marketSearchHistoryService.list(pageNum, pageSize, sort, order);
+        String userIdStr = req.getParameter("userId");
+        String keyword = req.getParameter("keyword");
+        Integer userId = null;
+        if(!StringUtils.isEmpty(userIdStr))
+            userId = Integer.valueOf(userIdStr);
+        List<MarketSearchHistory> historyList = marketSearchHistoryService.list(pageNum, pageSize, sort, order, userId, keyword);
         Object requestBody = ResponseUtil.okList(historyList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }

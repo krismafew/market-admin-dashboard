@@ -7,6 +7,7 @@ import com.laoyancheng.www.db.domain.MarketBrandExample;
 import com.laoyancheng.www.db.mapper.MarketBrandMapper;
 import com.laoyancheng.www.service.MarketBrandService;
 import com.laoyancheng.www.util.MyBatisUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
@@ -18,11 +19,17 @@ import java.util.List;
  */
 public class MarketBrandServiceImpl implements MarketBrandService {
     @Override
-    public List<MarketBrand> list(Integer pageNum, Integer pageSize, String sort, String order) {
+    public List<MarketBrand> list(Integer pageNum, Integer pageSize, String sort, String order, Integer id, String name) {
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
         MarketBrandMapper marketBrandMapper = sqlSession.getMapper(MarketBrandMapper.class);
         MarketBrandExample marketBrandExample = new MarketBrandExample();
-        marketBrandExample.orderBy(sort + " " + order).createCriteria().andDeletedEqualTo(false);
+        MarketBrandExample.Criteria criteria = marketBrandExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
+        if(id != null)
+            criteria.andIdEqualTo(id);
+        if(!StringUtils.isEmpty(name))
+            criteria.andNameLike("%" + name + "%");
+        marketBrandExample.setOrderByClause(sort + " " + order);
         PageHelper.startPage(pageNum, pageSize);
         List<MarketBrand> brandList = marketBrandMapper.selectByExample(marketBrandExample);
         sqlSession.close();

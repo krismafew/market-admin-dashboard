@@ -171,7 +171,12 @@ public class AdminBrandController extends HttpServlet {
         Integer pageSize = Integer.valueOf(req.getParameter("limit"));
         String sort = req.getParameter("sort");
         String order = req.getParameter("order");
-        List<MarketBrand> brandList = marketBrandService.list(pageNum, pageSize, sort, order);
+        String idStr = req.getParameter("id");
+        String name = req.getParameter("name");
+        Integer id = null;
+        if(!StringUtils.isEmpty(idStr))
+            id = Integer.valueOf(idStr);
+        List<MarketBrand> brandList = marketBrandService.list(pageNum, pageSize, sort, order, id, name);
         Object requestBody = ResponseUtil.okList(brandList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }

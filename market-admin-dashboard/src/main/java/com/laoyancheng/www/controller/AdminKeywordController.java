@@ -138,8 +138,10 @@ public class AdminKeywordController extends HttpServlet {
         Integer pageSize = Integer.valueOf(req.getParameter("limit"));
         String sort = req.getParameter("sort");
         String order = req.getParameter("order");
+        String keyword = req.getParameter("keyword");
+        String url = req.getParameter("url");
 
-        List<MarketKeyword> keywordList = marketKeywordService.list(pageNum, pageSize, sort, order);
+        List<MarketKeyword> keywordList = marketKeywordService.list(pageNum, pageSize, sort, order, keyword, url);
         Object requestBody = ResponseUtil.okList(keywordList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }

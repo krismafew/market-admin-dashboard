@@ -129,8 +129,10 @@ public class AdminAdController extends HttpServlet {
         Integer pageSize = Integer.valueOf(req.getParameter("limit"));
         String sort = req.getParameter("sort");
         String order = req.getParameter("order");
+        String name = req.getParameter("name");
+        String content = req.getParameter("content");
 
-        List<MarketAd> adList = marketAdService.list(pageNum, pageSize, sort, order);
+        List<MarketAd> adList = marketAdService.list(pageNum, pageSize, sort, order, name, content);
         Object requestBody = ResponseUtil.okList(adList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }

@@ -5,7 +5,7 @@ import com.laoyancheng.www.db.domain.MarketKeyword;
 import java.util.List;
 
 public interface MarketKeywordService {
-    List<MarketKeyword> list(Integer pageNum, Integer pageSize, String sort, String order);
+    List<MarketKeyword> list(Integer pageNum, Integer pageSize, String sort, String order, String keyword, String url);
 
     MarketKeyword create(MarketKeyword marketKeyword);
 

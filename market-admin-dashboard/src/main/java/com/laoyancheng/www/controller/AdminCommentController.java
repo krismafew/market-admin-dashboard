@@ -46,8 +46,17 @@ public class AdminCommentController extends HttpServlet {
         Integer pageSize = Integer.valueOf(req.getParameter("limit"));
         String sort = req.getParameter("sort");
         String order = req.getParameter("order");
+        String userIdStr = req.getParameter("userId");
+        String valueIdStr = req.getParameter("valueId");
 
-        List<MarketComment> commentList = marketCommentService.list(pageNum, pageSize, sort, order);
+        Integer userId = null;
+        Integer valueId = null;
+        if(!StringUtils.isEmpty(userIdStr))
+            userId = Integer.valueOf(userIdStr);
+        if(!StringUtils.isEmpty(valueIdStr))
+            valueId = Integer.valueOf(valueIdStr);
+
+        List<MarketComment> commentList = marketCommentService.list(pageNum, pageSize, sort, order, userId, valueId);
         Object requestBody = ResponseUtil.okList(commentList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
 

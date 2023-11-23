@@ -7,5 +7,7 @@ import java.util.List;
 public interface MarketUserService {
     Integer countUsers();
 
-    List<MarketUser> list(Integer pageNum, Integer pageSize, String sort, String order);
+    List<MarketUser> list(Integer pageNum, Integer pageSize, String sort, String order, String username, String mobile);
+
+    MarketUser selectOneById(Integer id);
 }

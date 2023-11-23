@@ -18,11 +18,17 @@ import java.util.List;
 public class MarketFootprintServiceImpl implements MarketFootprintService {
 
     @Override
-    public List<MarketFootprint> list(Integer pageNum, Integer pageSize, String sort, String order) {
+    public List<MarketFootprint> list(Integer pageNum, Integer pageSize, String sort, String order, Integer userId, Integer goodsId) {
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
         MarketFootprintMapper marketFootprintMapper = sqlSession.getMapper(MarketFootprintMapper.class);
         MarketFootprintExample marketFootprintExample = new MarketFootprintExample();
-        marketFootprintExample.orderBy(sort + " " + order).createCriteria().andDeletedEqualTo(false);
+        MarketFootprintExample.Criteria criteria = marketFootprintExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
+        if(userId != null)
+            criteria.andUserIdEqualTo(userId);
+        if(goodsId != null)
+            criteria.andGoodsIdEqualTo(goodsId);
+        marketFootprintExample.setOrderByClause(sort + " " + order);
         PageHelper.startPage(pageNum, pageSize);
         List<MarketFootprint> footprintList = marketFootprintMapper.selectByExample(marketFootprintExample);
         sqlSession.close();

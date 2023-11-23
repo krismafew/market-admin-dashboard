@@ -37,7 +37,15 @@ public class AdminFootprintController extends HttpServlet {
         Integer pageSize = Integer.valueOf(req.getParameter("limit"));
         String sort = req.getParameter("sort");
         String order = req.getParameter("order");
-        List<MarketFootprint> footprintList = marketFootprintService.list(pageNum, pageSize, sort, order);
+        String userIdStr = req.getParameter("userId");
+        String goodsIdStr = req.getParameter("goodsId");
+        Integer userId = null;
+        Integer goodsId = null;
+        if(!StringUtils.isEmpty(userIdStr))
+            userId = Integer.valueOf(userIdStr);
+        if(!StringUtils.isEmpty(goodsIdStr))
+            goodsId = Integer.valueOf(goodsIdStr);
+        List<MarketFootprint> footprintList = marketFootprintService.list(pageNum, pageSize, sort, order, userId, goodsId);
         Object requestBody = ResponseUtil.okList(footprintList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }

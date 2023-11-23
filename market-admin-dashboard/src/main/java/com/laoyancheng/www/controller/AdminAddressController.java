@@ -38,7 +38,12 @@ public class AdminAddressController extends HttpServlet {
         Integer pageSize = Integer.valueOf(req.getParameter("limit"));
         String sort = req.getParameter("sort");
         String order = req.getParameter("order");
-        List<MarketAddress> addressList = marketAddressService.list(pageNum, pageSize, sort, order);
+        String name = req.getParameter("name");
+        String userIdStr = req.getParameter("userId");
+        Integer userId = null;
+        if(!StringUtils.isEmpty(userIdStr))
+            userId = Integer.valueOf(userIdStr);
+        List<MarketAddress> addressList = marketAddressService.list(pageNum, pageSize, sort, order, name, userId);
         Object requestBody = ResponseUtil.okList(addressList);
         resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }
