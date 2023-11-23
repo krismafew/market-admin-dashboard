@@ -1,5 +1,6 @@
 package com.laoyancheng.www.db.mapper;
 
+import com.laoyancheng.www.db.DTO.MarketRoleDTO;
 import com.laoyancheng.www.db.domain.MarketRole;
 import com.laoyancheng.www.db.domain.MarketRoleExample;
 import java.util.List;
@@ -149,4 +150,6 @@ public interface MarketRoleMapper {
      * @mbg.generated
      */
     int logicalDeleteByPrimaryKey(Integer id);
+
+    List<MarketRoleDTO> selectLabelList();
 }

@@ -424,4 +424,7 @@
     update market_role set deleted = 1
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectLabelList" resultType="com.laoyancheng.www.db.DTO.MarketRoleDTO">
+    select id as `value`, name as `label` from market_role
+  </select>
 </mapper>
