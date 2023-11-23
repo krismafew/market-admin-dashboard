@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -17,10 +18,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,6 +43,8 @@ public class AdminStorageController extends HttpServlet {
         String option = req.getRequestURI().replace("/admin/storage/", "");
         if(option.startsWith("fetch")){
             fetchStorage(req, resp);
+        }else if(StringUtils.equals("list", option)){
+            listStorage(req, resp);
         }
     }
 
@@ -48,7 +53,65 @@ public class AdminStorageController extends HttpServlet {
         String option = req.getRequestURI().replace("/admin/storage/", "");
         if(StringUtils.equals("create", option)){
             createStorage(req, resp);
+        }else if(StringUtils.equals("update", option)){
+            updateStorage(req, resp);
+        }else if(StringUtils.equals("delete", option)){
+            deleteStorage(req, resp);
         }
+    }
+
+    private void deleteStorage(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        ServletInputStream inputStream = req.getInputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+
+        while((len = inputStream.read(buffer)) != -1){
+            byteArrayOutputStream.write(buffer, 0, len);
+        }
+        String jsonStr = byteArrayOutputStream.toString("utf-8");
+
+        inputStream.close();
+        byteArrayOutputStream.close();
+
+        Integer id = Integer.valueOf(JacksonUtil.parseString(jsonStr, "id"));
+
+        marketStorageService.delete(id);
+        resp.getWriter().println(JacksonUtil.writeValueAsString(ResponseUtil.ok()));
+    }
+
+    private void updateStorage(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        ServletInputStream inputStream = req.getInputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+
+        while((len = inputStream.read(buffer)) != -1){
+            byteArrayOutputStream.write(buffer, 0, len);
+        }
+        String jsonStr = byteArrayOutputStream.toString("utf-8");
+
+        inputStream.close();
+        byteArrayOutputStream.close();
+        MarketStorage marketStorage = JacksonUtil.getObjectMapper().readValue(jsonStr, MarketStorage.class);
+        marketStorage.setUpdateTime(LocalDateTime.now());
+
+        marketStorageService.update(marketStorage);
+        Object requestBody = ResponseUtil.ok(marketStorage);
+        resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
+    }
+
+    private void listStorage(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Integer pageNum = Integer.valueOf(req.getParameter("page"));
+        Integer pageSize = Integer.valueOf(req.getParameter("limit"));
+        String sort = req.getParameter("sort");
+        String order = req.getParameter("order");
+        String key = req.getParameter("key");
+        String name = req.getParameter("name");
+
+        List<MarketStorage> storageList = marketStorageService.list(pageNum, pageSize, sort, order, key, name);
+        Object requestBody = ResponseUtil.okList(storageList);
+        resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }
 
     private void fetchStorage(HttpServletRequest req, HttpServletResponse resp) throws IOException {
