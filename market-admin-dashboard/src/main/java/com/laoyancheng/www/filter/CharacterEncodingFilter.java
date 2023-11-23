@@ -20,8 +20,8 @@ public class CharacterEncodingFilter implements Filter {
 
         if(!req.getRequestURI().startsWith("admin/storage/fetch/")) {
             resp.setContentType("text/html;charset=utf-8");
+            req.setCharacterEncoding("utf-8");
         }
-        req.setCharacterEncoding("utf-8");
         filterChain.doFilter(req, resp);
 
     }
