@@ -1,5 +1,6 @@
 package com.laoyancheng.www.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.laoyancheng.www.db.domain.MarketSystem;
 import com.laoyancheng.www.service.MarketSystemService;
 import com.laoyancheng.www.service.impl.MarketSystemServiceImpl;
@@ -35,6 +36,8 @@ public class AdminConfigController extends HttpServlet {
             showOrderConfig(req, resp);
         }else if(StringUtils.equals("wx", option)){
             showWxConfig(req, resp);
+        }else if(StringUtils.equals("mall", option)){
+            showMallConfig(req, resp);
         }
     }
 
@@ -48,7 +51,73 @@ public class AdminConfigController extends HttpServlet {
             setOrderConfig(req, resp);
         }else if(StringUtils.equals("wx", option)){
             setWxConfig(req, resp);
+        }else if(StringUtils.equals("mall", option)){
+            setMallConfig(req, resp);
         }
+    }
+
+    private void setMallConfig(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        ServletInputStream inputStream = req.getInputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+
+        while((len = inputStream.read(buffer)) != -1){
+            byteArrayOutputStream.write(buffer, 0, len);
+        }
+        String jsonStr = byteArrayOutputStream.toString("utf-8");
+        inputStream.close();
+        byteArrayOutputStream.close();
+
+        String marketMallAddress = JacksonUtil.parseString(jsonStr, "market_mall_address");
+        String marketMallLatitude = JacksonUtil.parseString(jsonStr, "market_mall_latitude");
+        String marketMallLongitude = JacksonUtil.parseString(jsonStr, "market_mall_longitude");
+        String marketMallName = JacksonUtil.parseString(jsonStr, "market_mall_name");
+        String marketMallPhone = JacksonUtil.parseString(jsonStr, "market_mall_phone");
+        String marketMallQq = JacksonUtil.parseString(jsonStr, "market_mall_qq");
+
+        MarketSystem marketSystem = new MarketSystem();
+        marketSystem.setUpdateTime(LocalDateTime.now());
+        marketSystem.setKeyName("market_mall_address");
+        marketSystem.setKeyValue(marketMallAddress);
+        marketSystemService.updateConfig(marketSystem);
+        marketSystem.setKeyName("market_mall_latitude");
+        marketSystem.setKeyValue(marketMallLatitude);
+        marketSystemService.updateConfig(marketSystem);
+        marketSystem.setKeyName("market_mall_longitude");
+        marketSystem.setKeyValue(marketMallLongitude);
+        marketSystemService.updateConfig(marketSystem);
+        marketSystem.setKeyName("market_mall_name");
+        marketSystem.setKeyValue(marketMallName);
+        marketSystemService.updateConfig(marketSystem);
+        marketSystem.setKeyName("market_mall_phone");
+        marketSystem.setKeyValue(marketMallPhone);
+        marketSystemService.updateConfig(marketSystem);
+        marketSystem.setKeyName("market_mall_qq");
+        marketSystem.setKeyValue(marketMallQq);
+        marketSystemService.updateConfig(marketSystem);
+
+        resp.getWriter().println(JacksonUtil.writeValueAsString(ResponseUtil.ok()));
+    }
+
+    private void showMallConfig(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        MarketSystem marketMallAddress = marketSystemService.getConfig("market_mall_address");
+        MarketSystem marketMallLatitude = marketSystemService.getConfig("market_mall_latitude");
+        MarketSystem marketMallLongitude = marketSystemService.getConfig("market_mall_longitude");
+        MarketSystem marketMallName = marketSystemService.getConfig("market_mall_name");
+        MarketSystem marketMallPhone = marketSystemService.getConfig("market_mall_phone");
+        MarketSystem marketMallQq = marketSystemService.getConfig("market_mall_qq");
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("market_mall_address", marketMallAddress.getKeyValue());
+        data.put("market_mall_latitude", marketMallLatitude.getKeyValue());
+        data.put("market_mall_longitude", marketMallLongitude.getKeyValue());
+        data.put("market_mall_name", marketMallName.getKeyValue());
+        data.put("market_mall_phone", marketMallPhone.getKeyValue());
+        data.put("market_mall_qq", marketMallQq.getKeyValue());
+
+        Object requestBody = ResponseUtil.ok(data);
+        resp.getWriter().println(JacksonUtil.writeValueAsString(requestBody));
     }
 
     private void setWxConfig(HttpServletRequest req, HttpServletResponse resp) throws IOException {
