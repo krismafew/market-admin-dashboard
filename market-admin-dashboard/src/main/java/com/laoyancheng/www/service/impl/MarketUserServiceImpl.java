@@ -9,6 +9,7 @@ import com.laoyancheng.www.util.MyBatisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -55,5 +56,14 @@ public class MarketUserServiceImpl implements MarketUserService {
         MarketUser marketUser = marketUserMapper.selectByPrimaryKey(id);
         sqlSession.close();
         return marketUser;
+    }
+
+    @Override
+    public Integer trackUserGrowth(String startTime, String endTime) {
+        SqlSession sqlSession = MyBatisUtil.getSqlSession();
+        MarketUserMapper marketUserMapper = sqlSession.getMapper(MarketUserMapper.class);
+        MarketUserExample marketUserExample = new MarketUserExample();
+        List<MarketUser> newUserList = marketUserMapper.selectUserListByAddTime(startTime, endTime);
+        return newUserList.size();
     }
 }

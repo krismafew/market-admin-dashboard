@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laoyancheng.www.db.mapper.MarketUserGrowthMapper">
+    <insert id="insertUserGrowth">
+        insert into market_user_growth (date, userGrowthNum) values (#{date}, #{growNum})
+    </insert>
+    <select id="selectUserGrowthList" resultType="com.laoyancheng.www.db.domain.MarketUserGrowth">
+        select id, `date` as `day`, userGrowthNum as users from market_user_growth
+    </select>
+</mapper>

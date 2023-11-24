@@ -1,5 +1,9 @@
 package com.laoyancheng.www.listener;
 
+import com.laoyancheng.www.db.job.UserGrowthStatJob;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -29,6 +33,25 @@ public class WebServletContextListener implements ServletContextListener {
         ServletContext context = servletContextEvent.getServletContext();
         context.setAttribute("url", properties.getProperty("url"));
         context.setAttribute("filePath", properties.getProperty("filePath"));
+
+        // 启动定时任务
+        JobDetail userGrowthStatJobDetail = JobBuilder.newJob(UserGrowthStatJob.class)
+                .withIdentity("userGrowthStatJob", "stat")
+                .build();
+
+        CronTrigger userGrowthRrigger = TriggerBuilder.newTrigger()
+                .withIdentity("newDay", "stat")
+                .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(0, 0))
+                .build();
+
+        Scheduler scheduler = null;
+        try {
+            scheduler = new StdSchedulerFactory().getScheduler();
+            scheduler.start();
+            scheduler.scheduleJob(userGrowthStatJobDetail, userGrowthRrigger);
+        } catch (SchedulerException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.laoyancheng.www.db.mapper;
 
 import com.laoyancheng.www.db.domain.MarketUser;
 import com.laoyancheng.www.db.domain.MarketUserExample;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -149,4 +151,6 @@ public interface MarketUserMapper {
      * @mbg.generated
      */
     int logicalDeleteByPrimaryKey(Integer id);
+
+    List<MarketUser> selectUserListByAddTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
 }

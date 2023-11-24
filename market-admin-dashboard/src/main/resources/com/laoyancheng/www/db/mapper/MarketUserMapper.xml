@@ -582,4 +582,7 @@
     update market_user set deleted = 1
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectUserListByAddTime" resultType="com.laoyancheng.www.db.domain.MarketUser">
+    select * from market_user where (add_time between #{startTime} and  #{endTime})
+  </select>
 </mapper>
