@@ -355,4 +355,36 @@
     </if>
     limit 1
   </select>
+  <select id="selectRegionHierarchy" resultMap="hierarchyMap">
+    select id, name, type, code from market_region where type = 1
+  </select>
+  <resultMap id="hierarchyMap" type="com.laoyancheng.www.db.DTO.MarketRegionDTO">
+    <id column="id" property="id"/>
+    <result column="code" property="code"/>
+    <result column="name" property="name"/>
+    <result column="type" property="type"/>
+
+    <collection property="children" ofType="com.laoyancheng.www.db.DTO.MarketRegionDTO" select="selectLevel2RegionChildren" column="id" />
+  </resultMap>
+
+  <select id="selectLevel2RegionChildren" resultMap="hierarchyMap1">
+    select id, name, type, code from market_region where pid = #{id}
+  </select>
+  <resultMap id="hierarchyMap1" type="com.laoyancheng.www.db.DTO.MarketRegionDTO">
+    <id column="id" property="id"/>
+    <result column="code" property="code"/>
+    <result column="name" property="name"/>
+    <result column="type" property="type"/>
+
+    <collection property="children" ofType="com.laoyancheng.www.db.DTO.MarketRegionDTO" select="selectLevel3RegionChildren" column="id" />
+  </resultMap>
+  <select id="selectLevel3RegionChildren" resultMap="hierarchyMap2">
+    select id, name, type, code from market_region where pid = #{id}
+  </select>
+  <resultMap id="hierarchyMap2" type="com.laoyancheng.www.db.DTO.MarketRegionDTO">
+    <id column="id" property="id"/>
+    <result column="code" property="code"/>
+    <result column="name" property="name"/>
+    <result column="type" property="type"/>
+  </resultMap>
 </mapper>

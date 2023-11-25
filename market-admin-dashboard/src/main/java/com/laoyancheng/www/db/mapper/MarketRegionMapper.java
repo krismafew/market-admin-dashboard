@@ -1,5 +1,6 @@
 package com.laoyancheng.www.db.mapper;
 
+import com.laoyancheng.www.db.DTO.MarketRegionDTO;
 import com.laoyancheng.www.db.domain.MarketRegion;
 import com.laoyancheng.www.db.domain.MarketRegionExample;
 import java.util.List;
@@ -125,4 +126,6 @@ public interface MarketRegionMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(MarketRegion record);
+
+    List<MarketRegionDTO> selectRegionHierarchy();
 }
