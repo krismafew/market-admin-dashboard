@@ -3,6 +3,7 @@ package com.laoyancheng.www.db.domain;
 import lombok.Data;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  * @Description:
@@ -12,6 +13,6 @@ import java.sql.Date;
 @Data
 public class MarketUserGrowth {
     private Integer id;
-    private Date day;
+    private LocalDate day;
     private Integer users;
 }

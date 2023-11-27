@@ -1,5 +1,6 @@
 package com.laoyancheng.www.listener;
 
+import com.laoyancheng.www.db.job.OrderStatJob;
 import com.laoyancheng.www.db.job.UserGrowthStatJob;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -36,19 +37,31 @@ public class WebServletContextListener implements ServletContextListener {
 
         // 启动定时任务
         JobDetail userGrowthStatJobDetail = JobBuilder.newJob(UserGrowthStatJob.class)
-                .withIdentity("userGrowthStatJob", "stat")
+                .withIdentity("userGrowthStatJob", "userStat")
                 .build();
 
-        CronTrigger userGrowthRrigger = TriggerBuilder.newTrigger()
-                .withIdentity("newDay", "stat")
+        JobDetail orderStatJobDetail = JobBuilder.newJob(OrderStatJob.class)
+                .withIdentity("orderStatJob", "orderStat")
+                .build();
+
+        CronTrigger newDayTriggerForUserStat = TriggerBuilder.newTrigger()
+                .withIdentity("newDay", "userStat")
                 .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(0, 0))
+                .build();
+
+        CronTrigger newDayTriggerForOrderStat = TriggerBuilder.newTrigger()
+                .withIdentity("newDay", "orderStat")
+                .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(0, 2))
                 .build();
 
         Scheduler scheduler = null;
         try {
             scheduler = new StdSchedulerFactory().getScheduler();
             scheduler.start();
-            scheduler.scheduleJob(userGrowthStatJobDetail, userGrowthRrigger);
+            scheduler.scheduleJob(userGrowthStatJobDetail, newDayTriggerForUserStat);
+            scheduler.scheduleJob(orderStatJobDetail, newDayTriggerForOrderStat);
+            // 为什么加上上面注释的代码会报错？
+
         } catch (SchedulerException e) {
             throw new RuntimeException(e);
         }

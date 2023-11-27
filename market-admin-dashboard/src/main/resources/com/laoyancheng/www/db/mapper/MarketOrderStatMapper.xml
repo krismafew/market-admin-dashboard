@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laoyancheng.www.db.mapper.MarketOrderStatMapper">
+    <insert id="insert">
+        insert into market_order_stat (date, amount, customers, orders, pcr, products) values (#{date}, #{amount}, #{users}, #{orders}, #{pcr}, #{products})
+    </insert>
+
+    <update id="updateByDate">
+        update market_order_stat
+            set amount = #{amount}, customers = #{users}, orders = #{orders}, pcr = #{pcr}, products = #{products}
+        where `date` = #{date}
+    </update>
+
+    <select id="selectAll" resultType="com.laoyancheng.www.db.domain.MarketOrderStat">
+        select `date` as `day`, amount, customers, orders, pcr, products  from market_order_stat
+    </select>
+
+</mapper>

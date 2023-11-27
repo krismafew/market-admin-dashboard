@@ -1,6 +1,7 @@
 package com.laoyancheng.www.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.laoyancheng.www.constant.MarketOrderStatusConstants;
 import com.laoyancheng.www.db.domain.MarketOrder;
 import com.laoyancheng.www.db.domain.MarketOrderExample;
 import com.laoyancheng.www.db.mapper.MarketOrderMapper;
@@ -12,6 +13,7 @@ import org.apache.ibatis.type.LocalDateTimeTypeHandler;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -82,5 +84,20 @@ public class MarketOrderServiceImpl implements MarketOrderService {
         marketOrderMapper.logicalDeleteByPrimaryKey(orderId);
         sqlSession.commit();
         sqlSession.close();
+    }
+
+    @Override
+    public List<MarketOrder> selectPaidOrderListByTime(LocalDateTime start, LocalDateTime end) {
+        SqlSession sqlSession = MyBatisUtil.getSqlSession();
+        MarketOrderMapper marketOrderMapper = sqlSession.getMapper(MarketOrderMapper.class);
+        MarketOrderExample marketOrderExample = new MarketOrderExample();
+        marketOrderExample.or().andDeletedEqualTo(false)
+                .andAddTimeGreaterThanOrEqualTo(start)
+                .andAddTimeLessThanOrEqualTo(end)
+                        .andOrderStatusIn(Arrays.asList(new Short[]{MarketOrderStatusConstants.PAID, MarketOrderStatusConstants.SHIPPED, MarketOrderStatusConstants.REFUND_APPLIED,
+                        MarketOrderStatusConstants.SYSTEM_CONFIRMED, MarketOrderStatusConstants.USER_CONFIRMED}));
+        List<MarketOrder> orderList = marketOrderMapper.selectByExample(marketOrderExample);
+        sqlSession.close();
+        return orderList;
     }
 }
