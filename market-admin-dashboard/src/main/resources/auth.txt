@@ -1,0 +1,3 @@
+/admin/auth/login
+/admin/auth/logout
+/admin/storage/create

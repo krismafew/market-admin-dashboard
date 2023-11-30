@@ -1,5 +1,6 @@
 package com.laoyancheng.www.filter;
 
+import com.laoyancheng.www.db.domain.MarketAdmin;
 import com.laoyancheng.www.util.JacksonUtil;
 import com.laoyancheng.www.util.ResponseUtil;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @Description:
@@ -28,7 +30,9 @@ public class AuthenticateFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse)servletResponse;
 
         String requestPath = req.getContextPath() + req.getRequestURI();
-        if(!requestPath.equals("/admin/auth/login") && !requestPath.equals("/admin/auth/logout")){
+        ServletContext context = req.getServletContext();
+        List<String> uriList = (List<String>)context.getAttribute("uriList");
+        if(!uriList.contains(requestPath)){
             HttpSession session = req.getSession();
             Object info = session.getAttribute("info");
             if(info == null){
