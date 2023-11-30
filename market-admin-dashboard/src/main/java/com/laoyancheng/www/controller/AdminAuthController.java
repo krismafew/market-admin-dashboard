@@ -41,7 +41,15 @@ public class AdminAuthController extends HttpServlet {
 
         if(StringUtils.equals(option, "login")){
             login(req, resp);
+        }else if(StringUtils.equals("logout", option)){
+            logout(req, resp);
         }
+    }
+
+    private void logout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        session.invalidate();
+        resp.getWriter().println(JacksonUtil.writeValueAsString(ResponseUtil.ok()));
     }
 
     // 处理登录

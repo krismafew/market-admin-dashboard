@@ -51,7 +51,7 @@ public class WebServletContextListener implements ServletContextListener {
 
         CronTrigger newDayTriggerForOrderStat = TriggerBuilder.newTrigger()
                 .withIdentity("newDay", "orderStat")
-                .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(0, 2))
+                .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(0, 0))
                 .build();
 
         Scheduler scheduler = null;
@@ -60,8 +60,6 @@ public class WebServletContextListener implements ServletContextListener {
             scheduler.start();
             scheduler.scheduleJob(userGrowthStatJobDetail, newDayTriggerForUserStat);
             scheduler.scheduleJob(orderStatJobDetail, newDayTriggerForOrderStat);
-            // 为什么加上上面注释的代码会报错？
-
         } catch (SchedulerException e) {
             throw new RuntimeException(e);
         }
